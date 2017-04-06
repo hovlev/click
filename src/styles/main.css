@@ -1,0 +1,39 @@
+@import './variables.css';
+@import './resets.css';
+
+/* Utilities */
+
+.hide-text {
+  text-indent: 100%;
+  white-space: nowrap;
+  overflow: hidden; 
+}
+
+.absolute {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.center {
+  margin: 0 auto;
+  position: relative;
+}
+
+/* Global rules */
+
+body {
+  font-family: var(--font-stack);
+}
+
+h1 {
+  margin: var(--padding) 0 0 0;
+  text-align: center;
+}
+
+p {
+  font-size: 0.75rem;
+  margin: calc(var(--padding) / 2) 0;
+  padding: 0 var(--padding);
+  text-align: center;
+}
