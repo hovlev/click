@@ -1,6 +1,10 @@
+import Game from '../Game';
+import Sidebar from '../Sidebar';
+
 const App = () =>
   <div>
-    <h1>Click game</h1>
+    <Game />
+    <Sidebar />
   </div>;
 
 export default App;
