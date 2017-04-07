@@ -1,10 +1,10 @@
 import actions from '../../actions';
 import { connect } from 'react-redux';
+import Board from './Board';
 
-const Game = ({ dispatch }) =>
+const Game = ({ dispatch, board }) =>
   <div>
-    <h2>Game</h2>
-    <a href="#" onClick={e => dispatch({ type: actions.TILE_SELECT, payload: e }) }>Clicky</a>
+    <Board board={board} dispatch={dispatch} />
   </div>;
 
 export default connect(state => ({
