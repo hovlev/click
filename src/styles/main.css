@@ -20,6 +20,30 @@
   position: relative;
 }
 
+td {
+  position: relative;
+}
+
+td a {
+  background: #FF0000;
+  cursor: pointer;
+  display: block;
+  height: 100%;
+}
+
+td:after {
+  content: '';
+  display: block;
+  margin-top: 100%;
+}
+td a {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
 /* Global rules */
 
 body {
@@ -31,9 +55,19 @@ h1 {
   text-align: center;
 }
 
-p {
-  font-size: 0.75rem;
-  margin: calc(var(--padding) / 2) 0;
-  padding: 0 var(--padding);
-  text-align: center;
+table {
+  width: 100%;
+}
+
+@media screen and (min-width: 700px) {
+  table {
+    width: 75%;
+  }
+
+  aside {
+    position: fixed;
+    right: 0px;
+    top: 0px;
+    width: 25%;
+  }
 }

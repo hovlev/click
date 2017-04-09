@@ -2,9 +2,9 @@ import Game from '../Game';
 import Sidebar from '../Sidebar';
 
 const App = () =>
-  <div>
-    <Game />
+  <section>
     <Sidebar />
-  </div>;
+    <Game />
+  </section>;
 
 export default App;
