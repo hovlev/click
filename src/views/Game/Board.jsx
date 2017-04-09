@@ -2,7 +2,7 @@ import actions from '../../actions';
 import Tile from './Tile';
 
 const Board = ({ dispatch, board }) =>
-  <table>
+  <table className="board">
     <tbody>
       {board.map((row, i) =>
         <tr key={i}>

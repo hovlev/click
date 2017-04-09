@@ -20,28 +20,84 @@
   position: relative;
 }
 
-td {
+.board {
+  border-spacing: 0;
+}
+
+.board tr:nth-child(even) td:nth-child(odd), .board tr:nth-child(odd) td:nth-child(even) {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.board td {
+  background: rgba(0, 0, 0, 0.15);
   position: relative;
 }
 
-td a {
-  background: #FF0000;
+.board td a {
   cursor: pointer;
   display: block;
   height: 100%;
 }
 
-td:after {
+.board td:after {
   content: '';
   display: block;
   margin-top: 100%;
 }
-td a {
+
+.board td a {
+  font-size: 15vw;
   position: absolute;
+  text-align: center;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
+}
+
+.scores {
+  text-align: center;
+  width: 100%;
+}
+
+.class_a {
+  background: #FF0000;
+  color: #FFF;
+  font-style: italic;
+  text-decoration: underline;
+}
+.class_b {
+  background: #0000FF;
+  color: #FFF;
+  font-family: Times;
+  font-weight: bold;
+}
+.class_c {
+  background: #00FF00;
+  color: #000;
+  font-family: Georgia;
+}
+.class_d {
+  background: #FFFF00;
+  color: #000;
+  font-family: "monaco";
+  text-decoration: underline;
+  text-transform: uppercase;
+}
+.class_e {
+  background: #00FFFF;
+  color: #000;
+  font-family: "Comic Sans MS";
+}
+.class_f {
+  background: #F000FF;
+  color: #FFF;
+  font-family: Impact;
+}
+.class_g {
+  background: #000;
+  color: #FFF;
+  font-family: Papyrus;
 }
 
 /* Global rules */
@@ -55,12 +111,12 @@ h1 {
   text-align: center;
 }
 
-table {
+.board {
   width: 100%;
 }
 
 @media screen and (min-width: 700px) {
-  table {
+  .board {
     width: 75%;
   }
 

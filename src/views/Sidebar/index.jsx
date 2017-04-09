@@ -1,16 +1,32 @@
 import actions from '../../actions';
 import { connect } from 'react-redux';
 
-const Sidebar = ({ dispatch, score }) =>
-  <aside>
-    <div>
-      { Object.keys(score.calculatedTally).sort().map((item, i) => 
+const ScoreTable = ({score}) => 
+  <table className="scores">
+    <thead>
+      <tr>
+        <th>Item</th>
+        <th>Quantity</th>
+        <th>Score</th>
+      </tr>
+    </thead>
+    <tbody>
+      { Object.keys(score.calculatedTally).sort().map((item, i) =>
         {
           const details = score.calculatedTally[item];
-          return <p key={i}>{item}: Quantity: {details.quantity} Total: {details.total}</p>
+          return <tr>
+            <td className={`class_${item}`}>{item}</td>
+            <td>{details.quantity}</td>
+            <td>{details.total}</td>
+          </tr>;
         }
       )}
-    </div>
+    </tbody>
+  </table>;
+
+const Sidebar = ({ dispatch, score }) =>
+  <aside>
+    {score.total ? <ScoreTable score={score} /> : ''}
     <p>Bonuses: {score.bonusTotal}</p>
     <p>Pretotal: {score.preTotal}</p>
     <p>Total: {score.total}</p>
