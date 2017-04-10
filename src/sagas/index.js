@@ -1,5 +1,4 @@
-import { call, takeLatest, put, take, spawn } from 'redux-saga/effects';
-import { channel } from 'redux-saga';
+import { call, takeLatest, put } from 'redux-saga/effects';
 import actions from '../actions';
 import 'isomorphic-fetch';
 
