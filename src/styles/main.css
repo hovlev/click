@@ -59,17 +59,20 @@
   font-style: italic;
   text-decoration: underline;
 }
+
 .class_b {
   @mixin gradient-background rgba(191,210,85,1), rgba(142,185,42,1), rgba(114,170,0,1), rgba(158,203,45,1);
   color: #FFF;
   font-family: Times;
   font-weight: bold;
 }
+
 .class_c {
   @mixin gradient-background #DDD, #EEE, #CCC, #BBB;
   color: #000;
   font-family: Georgia;
 }
+
 .class_d {
   @mixin gradient-background rgba(252,236,252,1), rgba(251,166,225,1), rgba(253,137,215,1), rgba(255,124,216,1);
   color: #000;
@@ -77,23 +80,24 @@
   font-family: "monaco";
   text-transform: uppercase;
 }
+
 .class_e {
   @mixin gradient-background rgba(174,188,191,1), rgba(110,119,116,1), rgba(10,14,10,1), rgba(10,8,9,1);
   color: #FFF;
   font-family: "Comic Sans MS";
 }
+
 .class_f {
   @mixin gradient-background rgba(248,80,50,1), rgba(241,111,92,1), rgba(246,41,12,1), rgba(240,47,23,1), rgba(231,56,39,1);
   color: #FFF;
   font-family: Impact;
 }
+
 .class_g {
   @mixin gradient-background rgba(240,183,161,1), rgba(140,51,16,1), rgba(117,34,1,1), rgba(191,110,78,1);
   color: #FFF;
   font-family: Papyrus;
 }
-
-/* Global rules */
 
 body {
   font-family: var(--font-stack);

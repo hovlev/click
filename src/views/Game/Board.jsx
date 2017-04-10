@@ -1,4 +1,3 @@
-import actions from '../../actions';
 import Tile from './Tile';
 
 const Board = ({ dispatch, board }) =>
