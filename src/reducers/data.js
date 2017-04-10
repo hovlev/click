@@ -1,4 +1,4 @@
-import { add, append, assoc, assocPath, divide, fromPairs, head, map, merge, multiply, nth, prop, reduce, update, path, pipe, subtract, times, toPairs } from 'ramda';
+import { add, append, assoc, assocPath, divide, filter, flatten, fromPairs, isEmpty, head, map, merge, multiply, nth, prop, reduce, update, path, pipe, subtract, times, toPairs } from 'ramda';
 import actions from '../actions';
 
 const init = {
@@ -18,6 +18,7 @@ const init = {
     min: 2
   },
   tally: {},
+  noTilesLeft: false,
   score: {
     bonusTotal: 0,
     calculatedTally: {},
@@ -39,6 +40,11 @@ const randomTile = state => {
   const rules = toPairs(prop('rules', state));
   const tile = rules[Math.round(Math.random() * rules.length)];
   return tile ? head(tile) : '';
+};
+
+const noTilesLeft = board => {
+  const filteredBoard = filter(x => x !== '', flatten(board));
+  return isEmpty(filteredBoard);
 };
 
 const calculateScore = (state, totalTally) => {
@@ -69,18 +75,20 @@ export default (state = init, action) => {
       const currentTally = path([ 'tally', payload.tile ], state);
       const updatedTally = currentTally ? add(currentTally, 1) : 1;
       const totalTally = assoc(payload.tile, updatedTally, prop('tally', state));
+      const updatedBoard = update(
+        payload.y, // update the specific y (row) index with the result of pipe
+        pipe(
+          prop('board'),
+          nth(payload.y), // nth y (row) of the board
+          update(payload.x, '') // clear the specific x (col) index in the y (row)
+        )(state),
+        prop('board', state)
+      );
       return merge(state, {
-        board: update(
-          payload.y, // update the specific y (row) index with the result of pipe
-          pipe(
-            prop('board'),
-            nth(payload.y), // nth y (row) of the board
-            update(payload.x, '') // clear the specific x (col) index in the y (row)
-          )(state),
-          prop('board', state)
-        ),
+        board: updatedBoard,
         tally: totalTally,
-        score: calculateScore(state, totalTally)
+        score: calculateScore(state, totalTally),
+        noTilesLeft: noTilesLeft(updatedBoard)
       });
     case actions.BOARD_LOADED:
       return merge(state, {
@@ -91,7 +99,8 @@ export default (state = init, action) => {
       return merge(state, {
         board: prop('cachedBoard', state),
         tally: prop('tally', init),
-        score: prop('score', init)
+        score: prop('score', init),
+        noTilesLeft: noTilesLeft(prop('cachedBoard', state))
       });
     case actions.GAME_RANDOM:
       const randomisedBoard = randomBoard(state);
@@ -99,7 +108,8 @@ export default (state = init, action) => {
         board: randomisedBoard,
         cachedBoard: randomisedBoard,
         tally: prop('tally', init),
-        score: prop('score', init)
+        score: prop('score', init),
+        noTilesLeft: noTilesLeft(randomisedBoard)
       });      
       return state;
     default:
