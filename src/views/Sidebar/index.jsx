@@ -14,7 +14,7 @@ const Score = ({score}) =>
       { Object.keys(score.calculatedTally).sort().map((item, i) =>
         {
           const details = score.calculatedTally[item];
-          return <tr>
+          return <tr key={i}>
             <td className={`item class_${item}`}>{item}</td>
             <td>{details.quantity}</td>
             <td>{details.total}</td>
@@ -32,6 +32,7 @@ const Sidebar = ({ dispatch, score }) =>
       <p>Pretotal: {score.preTotal}</p>
       <p>Total: {score.total}</p>
       <p><a href="#" onClick={() => dispatch({ type: actions.GAME_RESET })}>Reset game</a></p>
+      <p><a href="#" onClick={() => dispatch({ type: actions.GAME_RANDOM })}>Random game</a></p>
     </div>
   </aside>;
 

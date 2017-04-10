@@ -1,4 +1,4 @@
-import { add, assoc, assocPath, divide, fromPairs, map, merge, multiply, prop, reduce, update, path, pipe, toPairs, nth } from 'ramda';
+import { add, append, assoc, assocPath, divide, fromPairs, head, map, merge, multiply, nth, prop, reduce, update, path, pipe, subtract, times, toPairs } from 'ramda';
 import actions from '../actions';
 
 const init = {
@@ -13,6 +13,10 @@ const init = {
     f: { score: 4, bonus: { toCollect: 10, total: 23 } },
     g: { score: 3, bonus: { toCollect: 20, total: 2 } }
   },
+  random: {
+    max: 7,
+    min: 2
+  },
   tally: {},
   score: {
     bonusTotal: 0,
@@ -20,6 +24,21 @@ const init = {
     preTotal: 0,
     total: 0
   }
+};
+
+const randomBoard = state => {
+  const difference = subtract(path([ 'random', 'max' ], state), path([ 'random', 'min' ], state));
+  const columns = add(Math.round(Math.random() * difference), path([ 'random', 'min' ], state));
+  const rows = add(Math.round(Math.random() * difference), path([ 'random', 'min' ], state));
+  return times(() => times(
+    () => randomTile(state), columns
+  ), rows);
+};
+
+const randomTile = state => {
+  const rules = toPairs(prop('rules', state));
+  const tile = rules[Math.round(Math.random() * rules.length)];
+  return tile ? head(tile) : '';
 };
 
 const calculateScore = (state, totalTally) => {
@@ -74,6 +93,15 @@ export default (state = init, action) => {
         tally: prop('tally', init),
         score: prop('score', init)
       });
+    case actions.GAME_RANDOM:
+      const randomisedBoard = randomBoard(state);
+      return merge(state, {
+        board: randomisedBoard,
+        cachedBoard: randomisedBoard,
+        tally: prop('tally', init),
+        score: prop('score', init)
+      });      
+      return state;
     default:
       return state;
 
