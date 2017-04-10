@@ -1,27 +1,10 @@
-@import './variables.css';
 @import './resets.css';
-
-/* Utilities */
-
-.hide-text {
-  text-indent: 100%;
-  white-space: nowrap;
-  overflow: hidden; 
-}
-
-.absolute {
-  position: absolute;
-  left: 0;
-  top: 0;
-}
-
-.center {
-  margin: 0 auto;
-  position: relative;
-}
+@import './variables.css';
+@import './mixins.css';
 
 .board {
-  border-spacing: 0;
+  border-spacing: 1em;
+  width: 100%;
 }
 
 .board tr:nth-child(even) td:nth-child(odd), .board tr:nth-child(odd) td:nth-child(even) {
@@ -30,13 +13,8 @@
 
 .board td {
   background: rgba(0, 0, 0, 0.15);
+  overflow: hidden;
   position: relative;
-}
-
-.board td a {
-  cursor: pointer;
-  display: block;
-  height: 100%;
 }
 
 .board td:after {
@@ -46,6 +24,9 @@
 }
 
 .board td a {
+  cursor: pointer;
+  display: block;
+  height: 100%;
   font-size: 15vw;
   position: absolute;
   text-align: center;
@@ -60,42 +41,47 @@
   width: 100%;
 }
 
+.scores .item {
+  height: 3em;
+  width: 3em;
+}
+
 .class_a {
-  background: #FF0000;
+  @mixin gradient-background;
   color: #FFF;
   font-style: italic;
   text-decoration: underline;
 }
 .class_b {
-  background: #0000FF;
+  @mixin gradient-background rgba(191,210,85,1), rgba(142,185,42,1), rgba(114,170,0,1), rgba(158,203,45,1);
   color: #FFF;
   font-family: Times;
   font-weight: bold;
 }
 .class_c {
-  background: #00FF00;
+  @mixin gradient-background #DDD, #EEE, #CCC, #BBB;
   color: #000;
   font-family: Georgia;
 }
 .class_d {
-  background: #FFFF00;
+  @mixin gradient-background rgba(252,236,252,1), rgba(251,166,225,1), rgba(253,137,215,1), rgba(255,124,216,1);
   color: #000;
-  font-family: "monaco";
   text-decoration: underline;
+  font-family: "monaco";
   text-transform: uppercase;
 }
 .class_e {
-  background: #00FFFF;
-  color: #000;
+  @mixin gradient-background rgba(174,188,191,1), rgba(110,119,116,1), rgba(10,14,10,1), rgba(10,8,9,1);
+  color: #FFF;
   font-family: "Comic Sans MS";
 }
 .class_f {
-  background: #F000FF;
+  @mixin gradient-background rgba(248,80,50,1), rgba(241,111,92,1), rgba(246,41,12,1), rgba(240,47,23,1), rgba(231,56,39,1);
   color: #FFF;
   font-family: Impact;
 }
 .class_g {
-  background: #000;
+  @mixin gradient-background rgba(240,183,161,1), rgba(140,51,16,1), rgba(117,34,1,1), rgba(191,110,78,1);
   color: #FFF;
   font-family: Papyrus;
 }
@@ -106,21 +92,14 @@ body {
   font-family: var(--font-stack);
 }
 
-h1 {
-  margin: var(--padding) 0 0 0;
-  text-align: center;
-}
-
-.board {
-  width: 100%;
-}
-
 @media screen and (min-width: 700px) {
   .board {
     width: 75%;
   }
 
   aside {
+    height: 100vh;
+    overflow-y: scroll;
     position: fixed;
     right: 0px;
     top: 0px;

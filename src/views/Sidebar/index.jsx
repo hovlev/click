@@ -1,7 +1,7 @@
 import actions from '../../actions';
 import { connect } from 'react-redux';
 
-const ScoreTable = ({score}) => 
+const Score = ({score}) => 
   <table className="scores">
     <thead>
       <tr>
@@ -15,7 +15,7 @@ const ScoreTable = ({score}) =>
         {
           const details = score.calculatedTally[item];
           return <tr>
-            <td className={`class_${item}`}>{item}</td>
+            <td className={`item class_${item}`}>{item}</td>
             <td>{details.quantity}</td>
             <td>{details.total}</td>
           </tr>;
@@ -26,11 +26,13 @@ const ScoreTable = ({score}) =>
 
 const Sidebar = ({ dispatch, score }) =>
   <aside>
-    {score.total ? <ScoreTable score={score} /> : ''}
-    <p>Bonuses: {score.bonusTotal}</p>
-    <p>Pretotal: {score.preTotal}</p>
-    <p>Total: {score.total}</p>
-    <p><a href="#" onClick={() => dispatch({ type: actions.GAME_RESET })}>Reset game</a></p>
+    <div>
+      {score.total ? <Score score={score} /> : ''}
+      <p>Bonuses: {score.bonusTotal}</p>
+      <p>Pretotal: {score.preTotal}</p>
+      <p>Total: {score.total}</p>
+      <p><a href="#" onClick={() => dispatch({ type: actions.GAME_RESET })}>Reset game</a></p>
+    </div>
   </aside>;
 
 export default connect(state => ({
