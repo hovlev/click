@@ -1,4 +1,4 @@
-import { add, append, assoc, assocPath, divide, filter, flatten, fromPairs, isEmpty, head, map, merge, multiply, nth, prop, reduce, update, path, pipe, subtract, times, toPairs } from 'ramda';
+import { add, assoc, divide, filter, flatten, fromPairs, isEmpty, head, map, merge, multiply, nth, prop, reduce, update, path, pipe, subtract, times, toPairs } from 'ramda';
 import actions from '../actions';
 
 const init = {
@@ -68,52 +68,71 @@ const calculateScore = (state, totalTally) => {
   });
 };
 
+const tileSelect = (state, payload) => {
+  const currentTally = path([ 'tally', payload.tile ], state);
+  const updatedTally = currentTally ? add(currentTally, 1) : 1;
+  const totalTally = assoc(payload.tile, updatedTally, prop('tally', state));
+  const updatedBoard = update(
+    payload.y, // update the specific y (row) index with the result of pipe
+    pipe(
+      prop('board'),
+      nth(payload.y), // nth y (row) of the board
+      update(payload.x, '') // clear the specific x (col) index in the y (row)
+    )(state),
+    prop('board', state)
+  );
+  return merge(state, {
+    board: updatedBoard,
+    tally: totalTally,
+    score: calculateScore(state, totalTally),
+    noTilesLeft: noTilesLeft(updatedBoard)
+  });
+};
+
+const boardLoaded = (state, payload) => {
+  return merge(state, {
+    board: prop('board', payload),
+    cachedBoard: prop('board', payload)
+  });
+};
+
+const gameRandom = state => {
+  const randomisedBoard = randomBoard(state);
+  return merge(state, {
+    board: randomisedBoard,
+    cachedBoard: randomisedBoard,
+    tally: prop('tally', init),
+    score: prop('score', init),
+    noTilesLeft: noTilesLeft(randomisedBoard)
+  });
+};
+
+const gameReset = state => {
+  return merge(state, {
+    board: prop('cachedBoard', state),
+    tally: prop('tally', init),
+    score: prop('score', init),
+    noTilesLeft: noTilesLeft(prop('cachedBoard', state))
+  });
+};
+
 export default (state = init, action) => {
   const payload = action.payload;
   switch (action.type) {
-    case actions.TILE_SELECT:
-      const currentTally = path([ 'tally', payload.tile ], state);
-      const updatedTally = currentTally ? add(currentTally, 1) : 1;
-      const totalTally = assoc(payload.tile, updatedTally, prop('tally', state));
-      const updatedBoard = update(
-        payload.y, // update the specific y (row) index with the result of pipe
-        pipe(
-          prop('board'),
-          nth(payload.y), // nth y (row) of the board
-          update(payload.x, '') // clear the specific x (col) index in the y (row)
-        )(state),
-        prop('board', state)
-      );
-      return merge(state, {
-        board: updatedBoard,
-        tally: totalTally,
-        score: calculateScore(state, totalTally),
-        noTilesLeft: noTilesLeft(updatedBoard)
-      });
-    case actions.BOARD_LOADED:
-      return merge(state, {
-        board: prop('board', action.payload),
-        cachedBoard: prop('board', action.payload)
-      });
-    case actions.GAME_RESET:
-      return merge(state, {
-        board: prop('cachedBoard', state),
-        tally: prop('tally', init),
-        score: prop('score', init),
-        noTilesLeft: noTilesLeft(prop('cachedBoard', state))
-      });
-    case actions.GAME_RANDOM:
-      const randomisedBoard = randomBoard(state);
-      return merge(state, {
-        board: randomisedBoard,
-        cachedBoard: randomisedBoard,
-        tally: prop('tally', init),
-        score: prop('score', init),
-        noTilesLeft: noTilesLeft(randomisedBoard)
-      });      
+    case actions.TILE_SELECT: {
+      return tileSelect(state, payload);
+    }
+    case actions.BOARD_LOADED: {
+      return boardLoaded(state, payload);
+    }
+    case actions.GAME_RESET: {
+      return gameReset(state, payload);
+    }
+    case actions.GAME_RANDOM: {
+      return gameRandom(state, payload);  
+    }
+    default: {
       return state;
-    default:
-      return state;
-
+    }
   }
 };
