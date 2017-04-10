@@ -3,7 +3,7 @@ import actions from '../actions';
 import 'isomorphic-fetch';
 
 const requestBoard = function* () {
-  const json = yield call(() => fetch('/mock/response.json', { method: 'get' })
+  const json = yield call(() => fetch('/mock/board.json', { method: 'get' })
     .then(res => res.json()));
   yield put({ type: actions.BOARD_LOADED, payload: json });
 };
